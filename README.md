@@ -75,6 +75,7 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
       - `cd tiscamera-v-tiscamera-0.14.0`
       - `sudo ./scripts/install-dependencies.sh --compilation --runtime`
       - `mkdir build && cd build`
+      - `cmake ..`
       - `make -j8`
       - `sudo make install`
    3) 三轴平台无需相机驱动，跳过此步
@@ -135,7 +136,7 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
 ### 2.2.1 建立仿生眼工程
    1) `cd path_to_workspace`
    2) `git clone https://github.com/BinoSense/BionicEyes`
-   3) 下载dependencies.zip文件(链接: https://pan.baidu.com/s/1nkJJqHHzsvlzcYILgWhDmg?pwd=1234)，解压至BionicEyes工程根目录下
+   3) 下载dependencies.zip文件( 链接: https://pan.baidu.com/s/1nkJJqHHzsvlzcYILgWhDmg?pwd=1234 )，解压至BionicEyes工程根目录下
    4) 如果拥有对应底层代码模块权限，clone相应模块置于BionicEyes/src路径下
    
 ### 2.2.1 创建仿生眼目录
