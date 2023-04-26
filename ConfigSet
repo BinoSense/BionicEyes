@@ -1,0 +1,17 @@
+##一些其他信息
+1）配置文件：
+ImageTransFilter_noImage            1000006
+ImageTransFilter                    1000005
+ImageTransFilter_LocalNodeImage     1000015
+NetworkAddressRange_Start           192.168.1.1
+NetworkAddressRange_End             192.168.254.254
+
+2）使用到的端口号：
+ImageTransPort              5120---图像广播端口
+ControlTransPort            5121---控制传输端口
+ControlTransPortWithServer    6674---控制传输端口(公网服务器)
+5122---远端图像服务节点端口
+5123---图像广播端口_无图像
+5124---获取数据触发器端口
+
+3）使用到的IP地址：

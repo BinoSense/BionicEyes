@@ -1,0 +1,11 @@
+{
+    "vars": {
+        "window_height": "540",
+        "window_width": "960",
+        "UI_width": "200",
+        "SGM_loop_time_ms": "40",
+        "obj_inner": "be4_pitch.obj",
+        "obj_outer": "be4_yaw.obj",
+        "obj_lens": "be4_roll.obj"
+    }
+}
