@@ -50,14 +50,15 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
    3) 下载dependencies.zip文件(链接: https://pan.baidu.com/s/1nkJJqHHzsvlzcYILgWhDmg?pwd=1234)，解压至BionicEyes工程根目录下
    4) 如果拥有对应底层代码模块权限，clone相应模块置于BionicEyes/src路径下
    
-### 2.1.1 创建仿生眼目录
+### 2.1.2 创建仿生眼目录
    1) `sudo mkdir /usr/Evo_BionicEyes`
    2) `sudo chmod 777 /usr/Evo_BionicEyes/`
+   3) 将随设备的配置文件BionicEyes_Settings拷贝至/usr/Evo_BionicEyes/路径下
  
-### 2.1.2 安装若干依赖库
+### 2.1.3 安装若干依赖库
    `sudo apt-get install build-essential git libgtk2.0-dev libhdf5-dev pkg-config libavcodec-dev libdc1394-22-dev libavformat-dev libswscale-dev libtbb-dev liblapacke-dev libvtk6-dev libatlas-base-dev`
 
-### 2.1.3 安装相机驱动
+### 2.1.4 安装相机驱动
    1) 针对仿生眼III:
       - `cd PATH_TO_WORKSPACE/BionicEyes/dependencies/package`
       - `sudo dpkg -i pylon_6.1.1.19861-deb0_amd64.deb`
@@ -80,31 +81,31 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
       - `sudo make install`
    3) 三轴平台无需相机驱动，跳过此步
    
-### 2.1.4 添加串口权限
+### 2.1.5 添加串口权限
    1) `sudo gedit /etc/udev/rules.d/99-serial.rules`
    2) 文件中添加“KERNEL=="ttyUSB*", MODE="0666"”
    3) sudo udevadm control --reload
 
-### 2.1.5 编译
+### 2.1.6 编译
    1)  `cd PATH_TO_WORKSPACE/BionicEyes`
    2)  `mkdir build && cd build`
    3)  `cmake ..`
    4)  `make -j8`
 #### cmake options
 - **-DBE_COMPILE_V3=<ON/OFF>**
-构建支持III代仿生眼相机的相机驱动库，内部使用
+构建支持III代仿生眼相机的相机驱动库，内部使用,默认OFF
 
 - **-DBE_COMPILE_V5=<ON/OFF>**
-构建支持V代仿生眼相机/I代仿生鹰眼的相机驱动库，内部使用
+构建支持V代仿生眼相机/I代仿生鹰眼的相机驱动库，内部使用,默认ON
 
 - **-DBE_DEP_UPDATE=<ON/OFF>**
-是否从仿生眼工程本地更新dependencies文件夹至/usr/Evo_BionicEyes，dependencies文件有更新后，必须执行本操作
+是否从仿生眼工程本地更新dependencies文件夹至/usr/Evo_BionicEyes，dependencies文件有更新后，必须执行本操作,默认OFF
 
 - **-DBE_INCLUDE_UPDATE=<ON/OFF>**
-是否从仿生眼工程本地更新头文件至/usr/Evo_BionicEyes
+是否从仿生眼工程本地更新头文件至/usr/Evo_BionicEyes,默认ON
 
 - **-DBE_LIB_UPDATE=<ON/OFF>**
-是否从仿生眼工程本地更新库文件至/usr/Evo_BionicEyes
+是否从仿生眼工程本地更新库文件至/usr/Evo_BionicEyes,默认ON
 
 - **-DCV_4=<ON/OFF>**
 是否使用OpenCV4,否则使用OpenCV3,默认使用Opencv4(opencv依赖库在dependencies文件夹中，无需额外安装)
@@ -115,7 +116,7 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
 - **-DBUILD_TEST=<ON/OFF>**
 编译Test，默认ON
 
-### 2.1.6 使用
+### 2.1.7 使用
    > - 所有设备可执行文件位于`PATH_TO_WORKSPACE/BionicEyes/bin/`
    > - 仿生眼系列设备sdk头文件、库文件位于`/usr/Evo_BionicEyes/`
 
@@ -136,17 +137,17 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
 ### 2.2.1 建立仿生眼工程
    1) `cd path_to_workspace`
    2) `git clone https://github.com/BinoSense/BionicEyes`
-   3) 下载dependencies.zip文件( 链接: https://pan.baidu.com/s/1nkJJqHHzsvlzcYILgWhDmg?pwd=1234 )，解压至BionicEyes工程根目录下
+   3) 下载dependencies.zip文件(链接: https://pan.baidu.com/s/1nkJJqHHzsvlzcYILgWhDmg?pwd=1234)，解压至BionicEyes工程根目录下
    4) 如果拥有对应底层代码模块权限，clone相应模块置于BionicEyes/src路径下
    
-### 2.2.1 创建仿生眼目录
+### 2.2.2 创建仿生眼目录
    1) `sudo mkdir /usr/Evo_BionicEyes`
    2) `sudo chmod 777 /usr/Evo_BionicEyes/`
  
-### 2.2.2 安装若干依赖库
+### 2.2.3 安装若干依赖库
    `sudo apt-get install build-essential git libgtk2.0-dev libhdf5-dev pkg-config libavcodec-dev libdc1394-22-dev libavformat-dev libswscale-dev libtbb-dev liblapacke-dev libvtk6-dev libatlas-base-dev`
 
-### 2.2.3 编译
+### 2.2.4 编译
    1)  `cd PATH_TO_WORKSPACE/BionicEyes`
    2)  `mkdir build && cd build`
    3)  `cmake ..`
@@ -176,7 +177,7 @@ SDK中部分功能会使用到OpenCV、CUDA等依赖库与软件，对应版本�
 - **-DBUILD_TEST=<ON/OFF>**
 编译Test，默认ON
 
-### 2.2.4 使用
+### 2.2.5 使用
    > - 所有设备可执行文件位于`PATH_TO_WORKSPACE/BionicEyes/bin/`
    > - 仿生眼系列设备sdk头文件、库文件位于`/usr/Evo_BionicEyes/`
 
