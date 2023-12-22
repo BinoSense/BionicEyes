@@ -188,6 +188,17 @@ namespace evo_be
         enumThermalInfraredImager = 3,  /**< Thermal infrared imager */
     };
 
+    enum BE_ExtraModuleType
+    {
+        enumLaserRanging,
+        enumInfraredFillingLamp,
+        enumZoomCamera,
+        enumWiper,
+        enumMouth_SDF,                  /**< Single Degree of Freedom Mouth*/
+        enumLighting,
+        enumRobotArm_5DOF,
+    };
+
     /**************************************************
      * @brief Enumeration of camera index type
      **************************************************/

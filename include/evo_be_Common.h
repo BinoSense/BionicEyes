@@ -258,6 +258,13 @@ namespace evo_be
                                     BE_Data_TransmissionType dataTransmissionType = enumDataTransmission_ASPAP,
                                     void *logger_ptr = NULL);
 
+        static CBionicEyes *create(string SrvipAddr,
+                                   string devName,
+                                   void *logger_ptr = NULL, int mediaPort=6674, int controlPort=6676);
+
+//        static CBionicEyes *create(string SrvipAddr,
+//                                   string devName,
+//                                   void *logger_ptr = NULL);
         /**************************************************
          * @brief Destructor
          **************************************************/
@@ -741,6 +748,29 @@ namespace evo_be
          * @brief Set wipers module(Only for eagle eye device),0: close ,1~255 :open, different speed
         **************************************************/
         virtual void setWipers(uchar value = 0) = 0;
+
+        // for wiper: para0, para1 work.
+        //      para0: id, 暂时无用
+        //      para1: 0 停止运动， 1~255 速度
+        // for zoom camera focal length: para0 works.
+        //      para0: 1~30
+        // for laserranging: para0, para1 work.
+        //      para0: id, 暂时无用
+        //      para1: 1/0，开/关
+        // for infrared filling lamp: para0, para1, para2 work.
+        //      para0: id, 暂时无用
+        //      para1: 1/0，开/关  
+        //      para2: 焦距， 0~255  
+        // for mouth: para0 works.
+        //      para0: 0x00 闭合，0x01 微张，0x02 半张，0x03 全张，0x0A 慢速随机，0x0B 快速随机，0x0C 跟随喇叭动
+        // for lighting: para0 and para1 work.
+        //      para0: 0x00 额头灯，0x01 胸部灯，0x02 右耳灯，0x03 左耳灯，0x04 底盘灯
+        //      para1: 0xFE 呼吸，0xFF 关闭，0x00 常亮， 其余为闪烁的频率
+        // for arm: para0, para1, and para2 work.
+        //      para0: 0xC8 右手臂， 0xC9 左手臂
+        //      para1: 0x00 执行动作， 0x01 学习动作
+        //      para2: 0x00~0x0F 16个动作， 0x10 解锁关节,  0x11 锁定关节, 0x12 设置为初始位置
+        virtual void setExtraModuleFunction(BE_ExtraModuleType type, int para0 = 0, int para1 = 0, int para2 = 0) = 0;
 	};
 
 } // namespace evo_be
