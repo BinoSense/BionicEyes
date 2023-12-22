@@ -145,6 +145,56 @@ namespace evo_be
 		virtual cv::Vec3f estimateVelocity(cv::Mat test) = 0;
 		virtual std::vector<cv::Vec3f> clusterCircles(const std::vector<cv::Vec3f> &circles, const std::vector<int> &labels) = 0;
 	};
+    
+    
+    class EVO_BE_IMAGEPROCESS_CORE_API CBE_StereoMatchingInterface
+    {
+    public:
+        static std::shared_ptr<CBE_StereoMatchingInterface> create(const std::string& model_name,bool eth_3d = false);
+        virtual ~CBE_StereoMatchingInterface();
+        
+        /**
+         *@brief 初始化
+         */
+        virtual void init() = 0;
+        
+        /**
+         * @brief 计算视差图
+         * @param left_img: 校正的左图
+         * @param right_img: 校正的右图
+         * @param Q: 校正的Q矩阵
+         * @param H: 校正图到原图的投影矩阵
+         * @param minDepth: 最近深度距离
+         * @param maxDepth: 最远深度距离
+         * @param disp[out]: 输出的视差图，校正坐标系下
+         * @param disp_8u[out]: 显示的视差图，原图坐标系下
+         * @param max[out]: 有效像素mask
+         * @return void
+         */
+        virtual void inference(const cv::Mat &left_img, const cv::Mat &right_img,
+                               const cv::Mat& Q,const cv::Mat& H,
+                               const double& minDepth, const double& maxDepth, 
+                               cv::Mat& disp, cv::Mat& disp_color, cv::Mat& mask) =0;
+                               
+                               
+        /**
+         * @brief 计算深度图
+         * @param disp: 视差图，校正坐标系下
+         * @param Q: 校正的Q矩阵
+         * @param H: 校正图到原图的投影矩阵
+         * @param mask: 有效像素mask
+         * @param minDepth: 最近深度距离
+         * @param maxDepth: 最远深度距离
+         * @param depth[out]: 输出的深度图，校正坐标系下
+         * @param depth_color[out]: 显示的深度图，原图坐标系下
+         * @return void
+         */
+        virtual void calDepth(const cv::Mat &disp, const cv::Mat& Q,const cv::Mat& H,
+                              const cv::Mat& mask, 
+                              const double& minDepth, const double& maxDepth, 
+                              cv::Mat& depth, cv::Mat& depth_color) =0;
+        
+    };
 
 } // namespace evo_be
 

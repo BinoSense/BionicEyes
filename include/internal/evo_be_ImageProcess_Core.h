@@ -95,6 +95,12 @@ namespace evo_be
 		cv::Matx31d t_rl, t_r0, t_l0;
 		cv::Matx33d J_l, J_r;
 	};
+    
+    struct RtStereoSPM
+	{
+		cv::Mat R_rl, R_r0, R_l0;
+		cv::Mat t_rl, t_r0, t_l0;
+	};
 	// class EVO_BE_IMAGEPROCESS_CORE_API CBE_Calibration
 	// {
 	// public:
@@ -175,7 +181,7 @@ namespace evo_be
 	{
 	public:
 		static std::shared_ptr<CBE_Calibrator> create(uchar *ptr, cv::Size beImageSize = cv::Size(2048, 1536));
-
+        static std::shared_ptr<CBE_Calibrator> create(const std::string& xml);
 		virtual ~CBE_Calibrator();
 		/**
 		 * @brief For internal debugging
@@ -283,6 +289,73 @@ namespace evo_be
 
 		virtual RtStereo estimateRtFromChessboard(cv::Mat srcStereoImage, cv::Size chessboardSize, float squareSize) const = 0;
 	};
+    
+    
+    class EVO_BE_IMAGEPROCESS_CORE_API CBE_Calibrator_Parallel
+    {
+    public:
+
+        //static std::shared_ptr<CBE_Calibrator_Parallel> create(uchar *ptr, cv::Size beImageSize = cv::Size(2048, 1536));
+        static std::shared_ptr<CBE_Calibrator_Parallel> create(const std::string& path2json);
+        virtual ~CBE_Calibrator_Parallel();
+
+        /**
+         * @brief Rotation of default pose (left to right) when all motor values are zero
+         * @return cv::Mat
+         */
+        virtual cv::Mat R_default() const = 0;
+        /**
+         * @brief Translation of default pose (left to right) when all motor values are zero
+         * @return cv::Mat
+         */
+        virtual cv::Mat t_default() const = 0;
+        /**
+         * @brief Standard camera intrinsic matrix
+         * @param  index            Index of left or right eye
+         * @param  scale            Current image width (or height) / max image width (or height); assume aspect ratio remains unchanged;
+         * @return cv::Mat
+         */
+        virtual cv::Mat K(int index, double scale = 1.0) const = 0;
+        /**
+         * @brief Standard camera distortion coefficient array
+         * @param  index            Index of left or right eye
+         * @return cv::Mat
+         */
+        virtual cv::Mat D(int index) const = 0;
+        /**
+         * @brief Convert motor values to [R|t] poses
+         * @param  imdata           Input array of 6 motor degrees
+         * @param  Rt               Output 6D poses (see struct RtStereo)
+         */
+        virtual void getRt(const float imudata[][4], RtStereoSPM &Rt)  = 0;
+        /**
+         * @brief Similar to void getRt(const float imudata[][4], RtStereo &Rt) const
+         * @param  imudata           Input array of 6 motor degrees
+         * @return RtStereo
+         */
+        virtual RtStereoSPM getRt(const float imudata[][4])  = 0;
+
+        /**
+         * @brief Bring srcPixel to dstPixel after applying rotation Rout
+         * Consider an object point P which corresponds to pixel coordinates "dstPixel" BEFORE rotation.
+         * Move camera to a new pose Rout (see definition).
+         * Object point P should have pixel coordinates "srcPixel" AFTER rotation.
+         *
+         * @param srcRt    Current camera pose struct
+         * @param srcPixel Normally central pixel coordinates
+         * @param dstPixel Target pixel coordinates in current image
+         * @param scale    Current image width (or height) / max image width (or height)
+         * @param cam      Left or right eye
+         * @param a	       Some direction in current eye frame (such as +y axis (0,1,0))
+         * @param b        Some direction in base frame (ideally b, if transformed to the world frame, should be constant such as gravity)
+         * @return cv::Mat Rout is a rotation transformation FROM camera TO base (inverse of Rt.R_r0 or Rt.R_l0)
+         */
+        virtual cv::Mat invKin_Pix2q(RtStereo srcRt, cv::Vec3d srcPixel, cv::Vec3d dstPixel, double scale, evo_be::CameraIndex cam,
+                                         cv::Vec3d a = cv::Vec3d(0, 0, 0), cv::Vec3d b = cv::Vec3d(0, 0, 0)) const = 0;
+
+
+    };
+
 
 	enum TrackType
 	{
@@ -365,6 +438,43 @@ namespace evo_be
 		virtual void setScaleFactor(double scaleFactor) = 0;
 		virtual void setFastThreshold(int initialFastThreshold, int minimumFastThreshold) = 0;
 	};
+    
+    /**
+     * @brief 立体校正
+     */
+    class EVO_BE_IMAGEPROCESS_CORE_API CBE_StereoRectify
+	{
+	public:
+		static std::shared_ptr<CBE_StereoRectify> create(bool useSV = true, int points_num = 2000);
+		virtual ~CBE_StereoRectify();
+        
+        virtual void stereoRectify(const cv::Mat& left_image, const cv::Mat& right_image, const cv::Mat& K1, const cv::Mat& D1, const cv::Mat& K2, const cv::Mat& D2, const cv::Mat &matR, const cv::Mat &matT,cv::Mat& left_rectify,cv::Mat& right_rectify) = 0;
+        
+        virtual cv::Mat getH() = 0;
+        
+        virtual cv::Mat getQ() = 0;
+        
+        virtual cv::Mat getR1() = 0;
+        
+        // test
+        virtual bool  save(const cv::Mat& cvmat,const std::string& filename) =0;
+        
+        virtual bool  chessboardReprojErr(const cv::Mat& left, const cv::Mat& right, 
+                                          const cv::Mat& K1,const cv::Mat& D1,
+                                          const cv::Mat&K2,const cv::Mat& D2, 
+                                          const cv::Mat& R, const cv::Mat& t, 
+                                          cv::Size sz, double square_size, 
+                                          double& rms,cv::Mat* res = 0) =0;
+
+        virtual bool  chessboardCalcRT(const cv::Mat& left, const cv::Mat& right, 
+                                const cv::Mat& K1,const cv::Mat& D1, 
+                                const cv::Mat&K2,const cv::Mat& D2, 
+                                cv::Size sz, double square_size, 
+                                cv::Mat& cR, cv::Mat& ct
+                                ) =0;
+	};
+    
+    
 } // namespace evo_be
 
 #endif //_EVO_BE_IMAGEPROCESS_CORE_H_
