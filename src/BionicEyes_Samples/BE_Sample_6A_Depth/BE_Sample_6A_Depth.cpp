@@ -11,25 +11,33 @@
 #include <evo_be_ImageProcess_Core.h>
 #include <evo_be_ImageProcess_Core_GPU.h>
 #include <evo_be_Utilities.h>
-
+#include <evo_be_Common_Internal.h>
 
 using namespace evo_be;
 
 int main()
 {
-	// 读取标定数据
-    std::shared_ptr<CBE_Calibrator_Parallel> calib = CBE_Calibrator_Parallel::create("stereo_handeye_01.json");
-    
-    double scale =0.5;
-	cv::Mat K1 = calib->K(0,scale);
-    cv::Mat K2 = calib->K(1,scale);
-    cv::Mat D1 = calib->D(0);
-    cv::Mat D2 = calib->D(1);
-    
-    
 
 	// 连接设备
 	CBionicEyes *device = device->create ( enumConnect_ImageControl, evo_be::enumDeviceServer_Only );
+
+
+    CBE_Service *remote_connect;
+    remote_connect = remote_connect->create();
+    remote_connect->requestToTransFile(device->getBeDevice_Ip_str());
+
+    char *filename_remote = "./stereo_handeye_01.json";
+    remote_connect->recvFile(filename_remote,true);
+
+    // 读取标定数据
+    std::shared_ptr<CBE_Calibrator_Parallel> calib = CBE_Calibrator_Parallel::create("stereo_handeye_01.json");
+
+    double scale =0.5;
+    cv::Mat K1 = calib->K(0,scale);
+    cv::Mat K2 = calib->K(1,scale);
+    cv::Mat D1 = calib->D(0);
+    cv::Mat D2 = calib->D(1);
+
 	device->onoff_SV ( false );
 	device->onoff_VOR ( false );
 	device->goInitPosition ( enumAllMotor );

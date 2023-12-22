@@ -24,6 +24,7 @@ target_link_libraries(
         evo_be_BionicEyes_shared_${UBUNTU_DISTRIB_RELEASE}
         evo_be_Communication_shared_${UBUNTU_DISTRIB_RELEASE}
         evo_be_Internal_shared_${UBUNTU_DISTRIB_RELEASE}
+        evo_be_Device_Service_shared_${UBUNTU_DISTRIB_RELEASE}
        # evo_be_ImageProcess_Core_shared_${UBUNTU_DISTRIB_RELEASE}
         evo_be_ImageProcess_Core_CUDA_shared_${UBUNTU_DISTRIB_RELEASE}
         -Wl,--end-group

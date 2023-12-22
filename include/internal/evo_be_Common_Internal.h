@@ -64,6 +64,7 @@ namespace evo_be
         enumBE_SetLaserRangefinder = 0x40,
 		enumBE_SetWipers = 0x41,
 		enumBE_SetZoomFocalLength = 0x42,
+		enumBE_SetExtraModule = 0x43,
 
 		enumBE_GetMotorInitPos = 0x60,
 		enumBE_GetMotorUpDownLimit = 0x61,
@@ -142,6 +143,14 @@ namespace evo_be
 		int _moveType;
 		int _movebaseType;
 		uchar flag;
+	};
+
+	struct Be_ExtraModuleData_Control
+	{
+		BE_ExtraModuleType type;
+		int para0;
+		int para1;
+		int para2;
 	};
 
 	struct Be_data_NeckEye_Control
@@ -231,12 +240,12 @@ namespace evo_be
 		/**  send local file to device and save to specified path
 		* @param[in] fileName Local file path
 		*/
-		virtual bool sendFile(char *fileName) = 0;
+		virtual bool sendFile(char *fileName,bool x=false) = 0;
 
 		/**  recv remote file(specified path) and save to local path
 		* @param[in] fileName Local file path
 		*/
-		virtual bool recvFile(char *fileName) = 0;
+		virtual bool recvFile(char *fileName,bool x=false) = 0;
 
 		/**  Get remote bionic eye device ip address
 		*/
