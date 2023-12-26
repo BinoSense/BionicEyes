@@ -28,7 +28,7 @@ int main()
 
     char *filename_remote = "./stereo_handeye_01.json";
     remote_connect->recvFile(filename_remote,true);
-
+    delete remote_connect;
     // 读取标定数据
     std::shared_ptr<CBE_Calibrator_Parallel> calib = CBE_Calibrator_Parallel::create("stereo_handeye_01.json");
 
