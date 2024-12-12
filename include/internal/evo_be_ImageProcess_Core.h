@@ -350,10 +350,31 @@ namespace evo_be
          * @param b        Some direction in base frame (ideally b, if transformed to the world frame, should be constant such as gravity)
          * @return cv::Mat Rout is a rotation transformation FROM camera TO base (inverse of Rt.R_r0 or Rt.R_l0)
          */
-        virtual cv::Mat invKin_Pix2q(RtStereo srcRt, cv::Vec3d srcPixel, cv::Vec3d dstPixel, double scale, evo_be::CameraIndex cam,
+        virtual cv::Matx33d invKin_Pix2q(RtStereoSPM srcRt, cv::Vec3d srcPixel, cv::Vec3d dstPixel, double scale, evo_be::CameraIndex cam,
                                          cv::Vec3d a = cv::Vec3d(0, 0, 0), cv::Vec3d b = cv::Vec3d(0, 0, 0)) const = 0;
 
+        /**
+		 * @brief Compute encoder values such that they will produce camera pose srcR
+		 *
+		 * @param srcR Desired rotation transformation FROM camera TO base (inverse of Rt.R_r0 or Rt.R_l0)
+		 * @param cam  Left or right eye
+		 * @return cv::Vec3d Encoder values (pitch, roll, yaw)
+		 */
+        virtual cv::Vec3d invKin_Rot2q(cv::Matx33d srcR, evo_be::CameraIndex cam) const = 0;
 
+        /**
+		 * @brief Compute single point distance in left eye
+		 *
+		 * @param imageRawLeft left image
+		 * @param imageRawRight  right image
+		 * @param ROILeft  a small area centered around the measurement point such as cv::Rect(measurePoint.x-25,measurePoint.y-25,50,50)
+         * @param ROIRight The point where the right and left eyes match
+         * @param scale  Current image width (or height) / max image width (or height)
+         * @param Rt_spm  current Rt
+         * @param distance  distance in meters
+         * @return is success
+		 */
+        virtual bool Calculate_Point_Distance(cv::Mat &imageRawLeft, cv::Mat &imageRawRight,cv::Rect &ROILeft,cv::Rect &ROIRight,double scale,RtStereoSPM Rt_spm,double &distance) =0;
     };
 
 
