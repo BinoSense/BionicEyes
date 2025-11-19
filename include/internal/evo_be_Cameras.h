@@ -116,8 +116,8 @@ namespace evo_be
 		/* 抓取图像
 		* @brief : Grab newest image
 		*/
-		virtual bool grabImage(cv::Mat &left, cv::Mat &right, uint32_t &timestamp) = 0;
-		virtual bool grabImage(cv::Mat &fullImage, uint32_t& timestamp) = 0;
+		virtual bool grabImage(cv::Mat &left, cv::Mat &right, uint64_t &timestamp) = 0;
+		virtual bool grabImage(cv::Mat &fullImage, uint64_t& timestamp) = 0;
 
 		/* 开始抓取相机设置
 		* @brief : 开始抓取相机设置

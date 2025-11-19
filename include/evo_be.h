@@ -261,7 +261,7 @@ namespace evo_be
 	    cv::Mat image[MAXCAMERASInDEVICE];              /**< Image(sidebyside) */
 
 		uint32_t id;			                        /**< unique global id */
-		uint32_t timeStamp;		                        /**< timestamp (100 us) */
+		uint64_t timeStamp;		                        /**< timestamp (100 us) */
 		BE_IpInfo be_device_info;                       /**< BE device info, @see BE_IpInfo */
 
         bool imageFlag[MAXCAMERASInDEVICE];             /**< BE image exist flag */
