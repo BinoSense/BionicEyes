@@ -165,7 +165,11 @@ namespace evo_be
         bool flag_onoff;
         uchar value;
     };
-
+   struct Be_SpeedControl
+    {
+        int saccade_speed;
+        int pursuit_speed;
+    };
 	struct Be_SV_TransStru
 	{
 		uint8_t flag;

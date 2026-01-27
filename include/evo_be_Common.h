@@ -771,6 +771,8 @@ namespace evo_be
         //      para1: 0x00 执行动作， 0x01 学习动作
         //      para2: 0x00~0x0F 16个动作， 0x10 解锁关节,  0x11 锁定关节, 0x12 设置为初始位置
         virtual void setExtraModuleFunction(BE_ExtraModuleType type, int para0 = 0, int para1 = 0, int para2 = 0) = 0;
+        
+        virtual void setMotorPositionSpeed(int saccadeSpeed,int pursuitSpeed) = 0;
 	};
 
 } // namespace evo_be
