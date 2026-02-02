@@ -5,12 +5,13 @@
 #include <opencv2/opencv.hpp>
 
 #include <evo_be_Common.h>
-#include <evo_be_Console.h>
+#include <evo_be_Utilities.h>
 #include <evo_be_Communication.h>
 #include <evo_be_ImageProcess_Core.h>
 #include <evo_be_ImageProcess_Core_GPU.h>
-#include <evo_be_Utilities.h>
 
+using namespace std;
+using namespace evo_be;
 struct BE_FSMState // Finite state machine
 {
     evo_be::BE_Connect_Type connect_type;
@@ -34,7 +35,7 @@ bool initDevice(BE_FSMState &be_fsm, cv::Mat &canvas);
 int main(int argc, char *argv[])
 {
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--help") || evo_be::utility::ProgramOptionExists(argc, argv, "-h"))
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--help") || evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-h"))
     {
         printHelpMessage();
         std::exit(EXIT_FAILURE);
@@ -173,15 +174,15 @@ bool cmdOptionParser(int argc, char *argv[], BE_FSMState &be_fsm)
     be_fsm.connect_type = evo_be::enumConnect_ImageControl;
     be_fsm.connect_dataServerType = evo_be::enumLocalServer_First;
     be_fsm.data_transmissionType = evo_be::enumDataTransmission_ASPAP;
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "-t"))
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-t"))
         be_fsm.data_transmissionType = evo_be::enumDataTransmission_OneByOne;
 
     std::string option;
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--connect"))
-        option = evo_be::utility::GetProgramOptionAsString(argc, argv, "--connect");
-    else if (evo_be::utility::ProgramOptionExists(argc, argv, "-c"))
-        option = evo_be::utility::GetProgramOptionAsString(argc, argv, "-c");
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--connect"))
+        option = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "--connect");
+    else if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-c"))
+        option = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "-c");
 
     if (option == "c")
         be_fsm.connect_type = evo_be::enumConnect_Control;
@@ -190,10 +191,10 @@ bool cmdOptionParser(int argc, char *argv[], BE_FSMState &be_fsm)
     else if (option == "i")
         be_fsm.connect_type = evo_be::enumConnect_Image;
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--server"))
-        option = evo_be::utility::GetProgramOptionAsString(argc, argv, "--server");
-    else if (evo_be::utility::ProgramOptionExists(argc, argv, "-s"))
-        option = evo_be::utility::GetProgramOptionAsString(argc, argv, "-s");
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--server"))
+        option = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "--server");
+    else if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-s"))
+        option = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "-s");
 
     if (option == "lo")
         be_fsm.connect_dataServerType = evo_be::enumLocalServer_Only;
@@ -204,20 +205,20 @@ bool cmdOptionParser(int argc, char *argv[], BE_FSMState &be_fsm)
     else if (option == "df")
         be_fsm.connect_dataServerType = evo_be::enumDeviceServer_First;
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--receiverIP"))
-        be_fsm.receiver_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "--receiverIP");
-    else if (evo_be::utility::ProgramOptionExists(argc, argv, "-rip"))
-        be_fsm.receiver_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "-rip");
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--receiverIP"))
+        be_fsm.receiver_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "--receiverIP");
+    else if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-rip"))
+        be_fsm.receiver_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "-rip");
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--receiverIP"))
-        be_fsm.receiver_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "--receiverIP");
-    else if (evo_be::utility::ProgramOptionExists(argc, argv, "-rip"))
-        be_fsm.receiver_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "-rip");
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--receiverIP"))
+        be_fsm.receiver_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "--receiverIP");
+    else if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-rip"))
+        be_fsm.receiver_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "-rip");
 
-    if (evo_be::utility::ProgramOptionExists(argc, argv, "--serverIP"))
-        be_fsm.server_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "--serverIP");
-    else if (evo_be::utility::ProgramOptionExists(argc, argv, "-sip"))
-        be_fsm.server_ipAddr = evo_be::utility::GetProgramOptionAsString(argc, argv, "-sip");
+    if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "--serverIP"))
+        be_fsm.server_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "--serverIP");
+    else if (evo_be::BE_Utilities::ProgramOptionExists(argc, argv, "-sip"))
+        be_fsm.server_ipAddr = evo_be::BE_Utilities::GetProgramOptionAsString(argc, argv, "-sip");
     else
         return false;
 

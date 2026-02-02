@@ -8,7 +8,7 @@ find_package (Threads REQUIRED)
 find_package(Eigen3 REQUIRED)
 add_definitions     ( ${EIGEN3_DEFINITIONS} )
 include_directories ( ${EIGEN3_INCLUDE_DIRS} )
-add_definitions(-O3 -march=native)
+
 include_directories(
         /usr/local/cuda/include
         ${OpenCV_INCLUDE_DIRS}
@@ -30,4 +30,5 @@ target_link_libraries( ${TARGET_NAME_EXE}
         ${CMAKE_THREAD_LIBS_INIT}
         -Wl,--end-group
 )
+
 
